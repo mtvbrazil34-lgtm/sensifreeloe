@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Sensi Generator</title>
+
+<title>Smart Sensi Generator VIP</title>
 
 <style>
 
@@ -14,7 +16,9 @@ box-sizing:border-box;
 font-family:Arial;
 }
 
+
 body{
+
 height:100vh;
 display:flex;
 justify-content:center;
@@ -22,45 +26,35 @@ align-items:center;
 background:black;
 overflow:hidden;
 color:white;
+
 }
 
+
 .bgimage{
+
 position:fixed;
 width:100%;
 height:100%;
 object-fit:cover;
 z-index:-2;
+
 }
 
+
 body::before{
+
 content:"";
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.45);
 z-index:-1;
+
 }
 
-body::after{
-content:"";
-position:fixed;
-width:500px;
-height:500px;
-background:gold;
-filter:blur(180px);
-opacity:0.15;
-top:-120px;
-right:-120px;
-animation:float 6s infinite ease-in-out;
-}
 
-@keyframes float{
-0%{transform:translateY(0px);}
-50%{transform:translateY(40px);}
-100%{transform:translateY(0px);}
-}
 
-/* CONTAINER */
 .container{
+
 width:420px;
 max-width:92%;
 background:rgba(15,15,15,0.75);
@@ -70,16 +64,23 @@ padding:25px;
 border:1px solid rgba(255,215,0,0.35);
 text-align:center;
 box-shadow:0 0 30px rgba(255,215,0,0.25);
+
 }
+
+
 
 h1{
+
 font-size:20px;
-margin-bottom:10px;
+margin-bottom:15px;
 color:gold;
-text-shadow:0 0 10px rgba(255,215,0,0.6);
+
 }
 
+
+
 input{
+
 width:100%;
 padding:12px;
 margin:8px 0;
@@ -90,52 +91,13 @@ color:gold;
 outline:none;
 border:1px solid rgba(255,215,0,0.25);
 font-weight:bold;
+
 }
 
-/* GOLD DROPDOWN */
-.dropdown{
-position:relative;
-width:100%;
-margin:8px 0;
-}
 
-.selected{
-padding:12px;
-border-radius:12px;
-background:rgba(255,215,0,0.08);
-border:1px solid rgba(255,215,0,0.3);
-color:gold;
-font-weight:bold;
-cursor:pointer;
-}
 
-.options{
-position:absolute;
-top:100%;
-left:0;
-width:100%;
-background:rgba(15,15,15,0.95);
-border:1px solid rgba(255,215,0,0.25);
-border-radius:12px;
-overflow:hidden;
-display:none;
-z-index:10;
-}
-
-.options div{
-padding:12px;
-color:gold;
-cursor:pointer;
-transition:0.2s;
-}
-
-.options div:hover{
-background:rgba(255,215,0,0.15);
-color:white;
-}
-
-/* BUTTON */
 button{
+
 width:100%;
 padding:12px;
 border:none;
@@ -144,174 +106,364 @@ background:linear-gradient(135deg,#ffd700,#b8860b);
 color:black;
 font-weight:bold;
 cursor:pointer;
+
 }
+
 
 button:hover{
+
 transform:scale(1.05);
+
 }
 
+
+
+/* DROPDOWN */
+
+.dropdown{
+
+position:relative;
+margin:10px 0;
+
+}
+
+
+.selected{
+
+padding:12px;
+border-radius:12px;
+background:rgba(255,215,0,0.08);
+border:1px solid rgba(255,215,0,0.3);
+color:gold;
+cursor:pointer;
+
+}
+
+
+.options{
+
+display:none;
+position:absolute;
+top:100%;
+width:100%;
+background:#111;
+border-radius:12px;
+overflow:hidden;
+z-index:5;
+
+}
+
+
+.options div{
+
+padding:12px;
+color:gold;
+cursor:pointer;
+
+}
+
+
+.options div:hover{
+
+background:rgba(255,215,0,0.2);
+
+}
+
+
+
 /* RESULT */
+
 .result{
+
 margin-top:15px;
 text-align:left;
 background:rgba(255,255,255,0.05);
 padding:15px;
 border-radius:15px;
-border:1px solid rgba(255,215,0,0.15);
-animation:fade 0.3s ease;
+
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
-}
 
 .stat{
-margin:4px 0;
-color:#f5f5f5;
+
+margin:5px 0;
+
 }
 
+
+
 footer{
+
 position:fixed;
 bottom:10px;
 font-size:12px;
 color:gold;
+
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <img src="https://i.imgur.com/y7cahch.png" class="bgimage">
 
-<div class="container">
+
+
+<!-- LOGIN -->
+
+<div id="loginScreen" class="container">
+
+
+<h1>🔒 VIP ACCESS</h1>
+
+
+<input 
+type="password"
+id="vipPassword"
+placeholder="Enter VIP Password">
+
+
+<button onclick="checkPassword()">
+Unlock
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- GENERATOR -->
+
+<div id="generator" class="container" style="display:none;">
+
 
 <h1>👑 Smart Sensi Generator</h1>
 
-<input type="text" id="device" placeholder="Type device (iPhone, Samsung, PC)">
 
-<!-- CUSTOM DROPDOWN -->
+<input 
+type="text"
+id="device"
+placeholder="Type device (iPhone, Samsung, PC)">
+
+
+
 <div class="dropdown">
 
+
 <div class="selected" onclick="toggleDropdown()" id="selectedMode">
+
 ⚙️ Balanced Mode
+
 </div>
+
 
 <div class="options" id="optionsBox">
-<div onclick="setMode('low','Low Mode')">Low Mode</div>
-<div onclick="setMode('balanced','Balanced Mode')">Balanced Mode</div>
-<div onclick="setMode('high','High Mode')">High Mode</div>
+
+
+<div onclick="setMode('low','Low Mode')">
+Low Mode
 </div>
+
+
+<div onclick="setMode('balanced','Balanced Mode')">
+Balanced Mode
+</div>
+
+
+<div onclick="setMode('high','High Mode')">
+High Mode
+</div>
+
 
 </div>
 
-<button onclick="generate()">Generate Sensitivity</button>
+</div>
+
+
+
+<button onclick="generate()">
+Generate Sensitivity
+</button>
+
 
 <div id="output"></div>
 
+
 </div>
 
-<footer>Made by 1Motive</footer>
+
+
+
+<footer>
+Made by 1Motive
+</footer>
+
+
+
 
 <script>
 
-let mode = "balanced";
-let base = {};
+
+// ===== VIP PASSWORD =====
+
+const VIP_PASSWORD = "1motive";
+
+
+function checkPassword(){
+
+const input = document.getElementById("vipPassword").value.trim();
+
+
+if(input === VIP_PASSWORD){
+
+document.getElementById("loginScreen").style.display="none";
+
+document.getElementById("generator").style.display="block";
+
+}
+
+else{
+
+alert("❌ Incorrect password.\n\nContact 1motive651 via Discord or @1._motive on TikTok / @motive2calm on Instagram for access.");
+
+}
+
+}
+
+
+
+
+
+// ===== GENERATOR =====
+
+
+let mode="balanced";
+
 
 function toggleDropdown(){
-let box = document.getElementById("optionsBox");
-box.style.display = box.style.display === "block" ? "none" : "block";
+
+let box=document.getElementById("optionsBox");
+
+box.style.display =
+box.style.display==="block" ? "none" : "block";
+
 }
 
-function setMode(val,label){
-mode = val;
-document.getElementById("selectedMode").innerText = "⚙️ " + label;
-document.getElementById("optionsBox").style.display = "none";
+
+
+function setMode(value,label){
+
+mode=value;
+
+document.getElementById("selectedMode").innerHTML =
+"⚙️ "+label;
+
+document.getElementById("optionsBox").style.display="none";
+
 }
+
+
 
 function rand(min,max){
+
 return Math.floor(Math.random()*(max-min+1))+min;
+
 }
 
-function getMobileRange(mode){
-if(mode==="low") return [90,110];
-if(mode==="balanced") return [114,150];
-return [130,200];
-}
 
-function getPCRange(mode){
-if(mode==="low") return {x:[1.10,1.20], y:[1.24,1.22]};
-if(mode==="balanced") return {x:[1.30,1.40], y:[1.9,1.4]};
-return {x:[2.30,3.0], y:[2.0,1.7]};
-}
 
 function generate(){
 
-let device=document.getElementById("device").value||"Unknown";
-let type=device.toLowerCase();
+
+let device=document.getElementById("device").value || "Unknown Device";
+
 let output=document.getElementById("output");
 
-/* PC MODE */
-if(type.includes("pc")){
 
-let pc=getPCRange(mode);
+let range;
 
-let x=rand(pc.x[0]*10,pc.x[1]*10)/10;
-let y=rand(pc.y[0]*10,pc.y[1]*10)/10;
 
-output.innerHTML=`
-<div class="result">
+if(mode==="low"){
 
-<h3 style="color:gold;">💻 PC / Emulator Sensitivity</h3>
-
-<div class="stat">Mode: ${mode.toUpperCase()}</div>
-<div class="stat">Mouse X: ${x}</div>
-<div class="stat">Mouse Y: ${y}</div>
-
-<br>
-<div class="stat">• Raw Input: ON</div>
-<div class="stat">• Mouse Acceleration: OFF</div>
-<div class="stat">• DPI: 800 - 1200</div>
-<div class="stat">• FPS: 60+ Stable</div>
-
-</div>
-`;
-return;
-}
-
-/* MOBILE MODE */
-let [min,max]=getMobileRange(mode);
-
-base={
-general:rand(min,max),
-red:rand(min,max),
-x2:rand(min,max),
-x4:rand(min,max),
-awm:rand(min,max),
-free:rand(min,max),
-fire:rand(40,60)
-};
-
-output.innerHTML=`
-<div class="result">
-
-<h3 style="color:gold;">📱 ${device} Sensitivity (${mode.toUpperCase()})</h3>
-
-<div class="stat">General: ${base.general}</div>
-<div class="stat">Red Dot: ${base.red}</div>
-<div class="stat">2x: ${base.x2}</div>
-<div class="stat">4x: ${base.x4}</div>
-<div class="stat">AWM: ${base.awm}</div>
-<div class="stat">Free Look: ${base.free}</div>
-<div class="stat">Fire Button: ${base.fire}</div>
-
-</div>
-`;
+range=[90,110];
 
 }
+
+else if(mode==="high"){
+
+range=[130,200];
+
+}
+
+else{
+
+range=[114,150];
+
+}
+
+
+
+output.innerHTML=`
+
+<div class="result">
+
+
+<h3 style="color:gold;">
+📱 ${device} (${mode.toUpperCase()})
+</h3>
+
+
+<div class="stat">
+General: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+Red Dot: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+2x Scope: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+4x Scope: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+AWM: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+Free Look: ${rand(range[0],range[1])}
+</div>
+
+
+<div class="stat">
+Fire Button: ${rand(40,60)}
+</div>
+
+
+</div>
+
+`;
+
+}
+
+
 
 </script>
+
 
 </body>
 </html>
