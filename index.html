@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Sensi Generator</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:black;
+overflow:hidden;
+color:white;
+}
+
+.bgimage{
+position:fixed;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.45);
+z-index:-1;
+}
+
+body::after{
+content:"";
+position:fixed;
+width:500px;
+height:500px;
+background:gold;
+filter:blur(180px);
+opacity:0.15;
+top:-120px;
+right:-120px;
+animation:float 6s infinite ease-in-out;
+}
+
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(40px);}
+100%{transform:translateY(0px);}
+}
+
+/* CONTAINER */
+.container{
+width:420px;
+max-width:92%;
+background:rgba(15,15,15,0.75);
+backdrop-filter:blur(14px);
+border-radius:28px;
+padding:25px;
+border:1px solid rgba(255,215,0,0.35);
+text-align:center;
+box-shadow:0 0 30px rgba(255,215,0,0.25);
+}
+
+h1{
+font-size:20px;
+margin-bottom:10px;
+color:gold;
+text-shadow:0 0 10px rgba(255,215,0,0.6);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+border-radius:12px;
+background:rgba(255,255,255,0.07);
+color:gold;
+outline:none;
+border:1px solid rgba(255,215,0,0.25);
+font-weight:bold;
+}
+
+/* GOLD DROPDOWN */
+.dropdown{
+position:relative;
+width:100%;
+margin:8px 0;
+}
+
+.selected{
+padding:12px;
+border-radius:12px;
+background:rgba(255,215,0,0.08);
+border:1px solid rgba(255,215,0,0.3);
+color:gold;
+font-weight:bold;
+cursor:pointer;
+}
+
+.options{
+position:absolute;
+top:100%;
+left:0;
+width:100%;
+background:rgba(15,15,15,0.95);
+border:1px solid rgba(255,215,0,0.25);
+border-radius:12px;
+overflow:hidden;
+display:none;
+z-index:10;
+}
+
+.options div{
+padding:12px;
+color:gold;
+cursor:pointer;
+transition:0.2s;
+}
+
+.options div:hover{
+background:rgba(255,215,0,0.15);
+color:white;
+}
+
+/* BUTTON */
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#ffd700,#b8860b);
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+/* RESULT */
+.result{
+margin-top:15px;
+text-align:left;
+background:rgba(255,255,255,0.05);
+padding:15px;
+border-radius:15px;
+border:1px solid rgba(255,215,0,0.15);
+animation:fade 0.3s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.stat{
+margin:4px 0;
+color:#f5f5f5;
+}
+
+footer{
+position:fixed;
+bottom:10px;
+font-size:12px;
+color:gold;
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="https://i.imgur.com/y7cahch.png" class="bgimage">
+
+<div class="container">
+
+<h1>👑 Smart Sensi Generator</h1>
+
+<input type="text" id="device" placeholder="Type device (iPhone, Samsung, PC)">
+
+<!-- CUSTOM DROPDOWN -->
+<div class="dropdown">
+
+<div class="selected" onclick="toggleDropdown()" id="selectedMode">
+⚙️ Balanced Mode
+</div>
+
+<div class="options" id="optionsBox">
+<div onclick="setMode('low','Low Mode')">Low Mode</div>
+<div onclick="setMode('balanced','Balanced Mode')">Balanced Mode</div>
+<div onclick="setMode('high','High Mode')">High Mode</div>
+</div>
+
+</div>
+
+<button onclick="generate()">Generate Sensitivity</button>
+
+<div id="output"></div>
+
+</div>
+
+<footer>Made by 1Motive</footer>
+
+<script>
+
+let mode = "balanced";
+let base = {};
+
+function toggleDropdown(){
+let box = document.getElementById("optionsBox");
+box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function setMode(val,label){
+mode = val;
+document.getElementById("selectedMode").innerText = "⚙️ " + label;
+document.getElementById("optionsBox").style.display = "none";
+}
+
+function rand(min,max){
+return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function getMobileRange(mode){
+if(mode==="low") return [90,110];
+if(mode==="balanced") return [114,150];
+return [130,200];
+}
+
+function getPCRange(mode){
+if(mode==="low") return {x:[1.10,1.20], y:[1.24,1.22]};
+if(mode==="balanced") return {x:[1.30,1.40], y:[1.9,1.4]};
+return {x:[2.30,3.0], y:[2.0,1.7]};
+}
+
+function generate(){
+
+let device=document.getElementById("device").value||"Unknown";
+let type=device.toLowerCase();
+let output=document.getElementById("output");
+
+/* PC MODE */
+if(type.includes("pc")){
+
+let pc=getPCRange(mode);
+
+let x=rand(pc.x[0]*10,pc.x[1]*10)/10;
+let y=rand(pc.y[0]*10,pc.y[1]*10)/10;
+
+output.innerHTML=`
+<div class="result">
+
+<h3 style="color:gold;">💻 PC / Emulator Sensitivity</h3>
+
+<div class="stat">Mode: ${mode.toUpperCase()}</div>
+<div class="stat">Mouse X: ${x}</div>
+<div class="stat">Mouse Y: ${y}</div>
+
+<br>
+<div class="stat">• Raw Input: ON</div>
+<div class="stat">• Mouse Acceleration: OFF</div>
+<div class="stat">• DPI: 800 - 1200</div>
+<div class="stat">• FPS: 60+ Stable</div>
+
+</div>
+`;
+return;
+}
+
+/* MOBILE MODE */
+let [min,max]=getMobileRange(mode);
+
+base={
+general:rand(min,max),
+red:rand(min,max),
+x2:rand(min,max),
+x4:rand(min,max),
+awm:rand(min,max),
+free:rand(min,max),
+fire:rand(40,60)
+};
+
+output.innerHTML=`
+<div class="result">
+
+<h3 style="color:gold;">📱 ${device} Sensitivity (${mode.toUpperCase()})</h3>
+
+<div class="stat">General: ${base.general}</div>
+<div class="stat">Red Dot: ${base.red}</div>
+<div class="stat">2x: ${base.x2}</div>
+<div class="stat">4x: ${base.x4}</div>
+<div class="stat">AWM: ${base.awm}</div>
+<div class="stat">Free Look: ${base.free}</div>
+<div class="stat">Fire Button: ${base.fire}</div>
+
+</div>
+`;
+
+}
+
+</script>
+
+</body>
+</html>
