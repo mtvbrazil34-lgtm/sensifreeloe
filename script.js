@@ -1,5 +1,5 @@
 // ===== VIP PASSWORD =====
-const VIP_PASSWORD = "1motive";
+const VIP_PASSWORD = "1motive22";
 
 function checkPassword() {
     const input = document.getElementById("vipPassword").value.trim();
