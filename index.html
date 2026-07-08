@@ -16,9 +16,7 @@ box-sizing:border-box;
 font-family:Arial;
 }
 
-
 body{
-
 height:100vh;
 display:flex;
 justify-content:center;
@@ -26,31 +24,23 @@ align-items:center;
 background:black;
 overflow:hidden;
 color:white;
-
 }
 
-
 .bgimage{
-
 position:fixed;
 width:100%;
 height:100%;
 object-fit:cover;
 z-index:-2;
-
 }
 
-
 body::before{
-
 content:"";
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.45);
 z-index:-1;
-
 }
-
 
 
 .container{
@@ -68,15 +58,11 @@ box-shadow:0 0 30px rgba(255,215,0,0.25);
 }
 
 
-
 h1{
-
 font-size:20px;
 margin-bottom:15px;
 color:gold;
-
 }
-
 
 
 input{
@@ -95,7 +81,6 @@ font-weight:bold;
 }
 
 
-
 button{
 
 width:100%;
@@ -111,11 +96,8 @@ cursor:pointer;
 
 
 button:hover{
-
 transform:scale(1.05);
-
 }
-
 
 
 /* DROPDOWN */
@@ -191,7 +173,6 @@ margin:5px 0;
 }
 
 
-
 footer{
 
 position:fixed;
@@ -213,7 +194,7 @@ color:gold;
 
 
 
-<!-- LOGIN -->
+<!-- PASSWORD SCREEN -->
 
 <div id="loginScreen" class="container">
 
@@ -228,7 +209,7 @@ placeholder="Enter VIP Password">
 
 
 <button onclick="checkPassword()">
-Unlock
+Unlock Generator
 </button>
 
 
@@ -246,10 +227,11 @@ Unlock
 <h1>👑 Smart Sensi Generator</h1>
 
 
+
 <input 
 type="text"
 id="device"
-placeholder="Type device (iPhone, Samsung, PC)">
+placeholder="Type device (minimum 6 characters)">
 
 
 
@@ -261,6 +243,7 @@ placeholder="Type device (iPhone, Samsung, PC)">
 ⚙️ Balanced Mode
 
 </div>
+
 
 
 <div class="options" id="optionsBox">
@@ -283,20 +266,24 @@ High Mode
 
 </div>
 
+
 </div>
 
 
 
+
 <button onclick="generate()">
+
 Generate Sensitivity
+
 </button>
+
 
 
 <div id="output"></div>
 
 
 </div>
-
 
 
 
@@ -307,30 +294,37 @@ Made by 1Motive
 
 
 
+
 <script>
 
 
 // ===== VIP PASSWORD =====
 
-const VIP_PASSWORD = "1motive22";
+const VIP_PASSWORD = "1motive";
 
 
 function checkPassword(){
 
-const input = document.getElementById("vipPassword").value.trim();
+let input =
+document.getElementById("vipPassword").value.trim();
 
 
 if(input === VIP_PASSWORD){
 
+
 document.getElementById("loginScreen").style.display="none";
 
+
 document.getElementById("generator").style.display="block";
+
 
 }
 
 else{
 
+
 alert("❌ Incorrect password.\n\nContact 1motive651 via Discord or @1._motive on TikTok / @motive2calm on Instagram for access.");
+
 
 }
 
@@ -346,47 +340,84 @@ alert("❌ Incorrect password.\n\nContact 1motive651 via Discord or @1._motive o
 let mode="balanced";
 
 
+
 function toggleDropdown(){
 
 let box=document.getElementById("optionsBox");
 
+
 box.style.display =
-box.style.display==="block" ? "none" : "block";
+box.style.display==="block"
+? "none"
+: "block";
+
 
 }
+
 
 
 
 function setMode(value,label){
 
+
 mode=value;
 
-document.getElementById("selectedMode").innerHTML =
+
+document.getElementById("selectedMode").innerHTML=
 "⚙️ "+label;
+
 
 document.getElementById("optionsBox").style.display="none";
 
+
 }
+
 
 
 
 function rand(min,max){
 
-return Math.floor(Math.random()*(max-min+1))+min;
+return Math.floor(
+Math.random()*(max-min+1)
+)+min;
 
 }
+
 
 
 
 function generate(){
 
 
-let device=document.getElementById("device").value || "Unknown Device";
 
-let output=document.getElementById("output");
+let device =
+document.getElementById("device").value.trim();
+
+
+
+// 6 CHARACTER CHECK
+
+if(device.length < 6){
+
+
+alert("❌ Device name must be at least 6 characters.");
+
+
+return;
+
+
+}
+
+
+
+
+let output =
+document.getElementById("output");
+
 
 
 let range;
+
 
 
 if(mode==="low"){
@@ -409,14 +440,22 @@ range=[114,150];
 
 
 
+
+
 output.innerHTML=`
+
 
 <div class="result">
 
 
 <h3 style="color:gold;">
-📱 ${device} (${mode.toUpperCase()})
+📱 ${device} Sensitivity
 </h3>
+
+
+<div class="stat">
+Mode: ${mode.toUpperCase()}
+</div>
 
 
 <div class="stat">
@@ -454,7 +493,9 @@ Fire Button: ${rand(40,60)}
 </div>
 
 
+
 </div>
+
 
 `;
 
